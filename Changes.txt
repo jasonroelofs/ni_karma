@@ -1,0 +1,29 @@
+3.0 r03 added Loading on demand.  It will load when entering a lockout dungeon in a raid.  Requires the Ni_Loader addon, included.
+
+3.0 r02 added deathknights, and some german localizations.
+
+3.0 r01 updated some of the functions to handle WotFLK
+
+2.4 r01 added German functional translation (will handle rolls).  Freezes item when populating roll window, added button to clear current item.
+
+2.2 r01 fixed some issues with the 2.2 changes.  Website scripts now point to wow armory for item info instead of allakhazam.
+
+2.1 r01 fixed some issues with the 2.1 changes.
+
+2.0 r03 New karma.php web script to handle changes in savedvariables.
+
+2.0 r01 Renumbered based on WoW version, updated to run with WoW 2.0.  Some minor enhancements.
+
+0.93.1 Added data format tag to help upgrading.  Added lifetime karma, which is all points added up, but ignoring points lost from items.  More bugfixes.  Added /km create command.  Changed web scripts to read lifetime karma.
+
+0.92.3 beta - more bugfixes
+
+0.92.2 beta - important bugfix (open rolls were breaking db)
+
+0.92.1 beta - Major rewrite to allow localizations.  Fixed parser functions, fixed compact routine, other stuff.  Need translations.  Probably still bugs, so save your old backup karma files... just in case :-)
+
+0.92 beta - This has some bugfixes and a minor change where "nobonus" declarations on a class item will use up to 50 points of karma. This is because there is a minimum cost of 25 (generally), and had they used bonus with 50 points, it would cost them the same 25. This makes it a little friendlier to long-time raiders. Also added a compression function in case your website php scripts are running out of memory. Note that if you compress the file, it will NOT BE BACKWARD COMPATIBLE. You must not use a previous version on the new file (or it'll overwrite entries, although the final karma will be correct).  Still needs work on compression algorithm.
+
+0.91.1 - updated TOC (11000)
+
+0.91 - bugfixes to initial 0.90

@@ -1,0 +1,13 @@
+<Bindings>
+	<!-- User interface key bindings -->
+	<Binding name="ROLLWINDOW" header="KARMA">
+	  if (KarmaRollFrame:IsVisible()) then
+  		KarmaRollFrame:Hide();
+	  elseif (KarmaConfig["CURRENT RAID"]) then
+		KarmaRollFrame:Show();
+	  else
+	    Karma_message(nks.KMSG.DISABLED);
+	  end
+	</Binding>
+</Bindings>
+

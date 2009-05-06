@@ -1,0 +1,23 @@
+TODO for NKS
+
+version 1:
+! config window (gui)
+! config options per raid, based on global default.  Will allow different min/max for different raids
+? add server name, to allow multi-server raids.  might just set name of raid
+? have current raid changes, and merge them afterward (probably better for version 2)
+! window with current karma of raid, ordered by class and karma
+? window with current karma of database
+? editor for minor changes, such as deleting a new typo player
+? ability to query history for different databases from the KM
+
+
+Version 2: (using PTR 1.12 private channels!)
+! have current raid changes [Onyxia/DTS], and merge them afterward
+! have ability to merge changes to Karma Master (KM) using private channel
+! ability to retrieve updated karma file from KM
+! ability to query history for different databases from the KM
+
+
+
+
+

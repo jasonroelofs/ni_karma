@@ -1,0 +1,738 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+
+  <!-- Frame to handle all core events --> 
+  <Frame name="Karma_core" parent="UIParent"> 
+    <Scripts> 
+      <OnLoad> 
+        Karma_OnLoad();
+      </OnLoad> 
+      <OnEvent> 
+        Karma_OnEvent(event);
+      </OnEvent> 
+    </Scripts> 
+  </Frame>
+
+  <Frame name="ConfigPanel">
+	<Scripts>
+		<OnLoad>
+			ConfigPanel_OnLoad(self);
+		</OnLoad>
+	</Scripts>
+  </Frame>
+
+  <!-- from wowwiki -->
+  <GameTooltip name="KarmaTooltip" frameStrata="TOOLTIP" inherits="GameTooltipTemplate" parent="UIParent" hidden="true">
+    <Scripts>
+      <Onload>
+        this:SetOwner(WorldFrame, "ANCHOR_NONE");
+      </Onload>
+    </Scripts>
+  </GameTooltip>
+
+
+
+  <Button name="KarmaRollButtonTemplate" virtual="true">
+    <Size>
+      <AbsDimension x="298" y="16"/>
+    </Size>
+    <Layers>
+      <Layer level="BORDER">
+        <FontString name="$parentName" inherits="GameFontNormalSmall" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="88" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="10" y="-3"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentClass" inherits="GameFontHighlightSmall" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="50" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentName" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentKarma" inherits="GameFontHighlightSmall" justifyH="RIGHT">
+          <Size>
+            <AbsDimension x="30" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentClass" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentRoll" inherits="GameFontHighlightSmall" justifyH="RIGHT">
+          <Size>
+            <AbsDimension x="30" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentKarma" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentTotal" inherits="GameFontHighlightSmall" justifyH="RIGHT">
+          <Size>
+            <AbsDimension x="30" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentRoll" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        this:RegisterForClicks("LeftButtonUp","RightButtonUp");
+      </OnLoad>
+      <OnClick>
+        KarmaRollFrameRollButton_OnClick(arg1);
+      </OnClick>
+    </Scripts>
+    <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD">
+      <Size>
+        <AbsDimension x="298" y="16"/>
+      </Size>
+      <Anchors>
+        <Anchor point="TOP">
+          <Offset>
+            <AbsDimension x="5" y="-2"/>
+          </Offset>
+        </Anchor>
+      </Anchors>
+    </HighlightTexture>
+  </Button>
+
+  <Frame name="KarmaRollFrame" frameStrata="LOW" toplevel="true" enableMouse="true" movable="true" hidden="true" parent="UIParent">
+    <Size>
+      <AbsDimension x="384" y="512" />
+    </Size>
+
+    <Anchors>
+      <Anchor point="CENTER" />
+    </Anchors>
+
+    <TitleRegion setAllPoints="true"/>
+
+    <Scripts>
+      <OnLoad>
+        KarmaRoll_OnLoad();
+      </OnLoad>
+      <OnEvent>
+        KarmaRoll_OnEvent(event);
+      </OnEvent>
+    </Scripts>
+
+    <Layers>
+      <Layer level="BACKGROUND">
+        <FontString name="$parentText" inherits="GameFontNormalLarge" text="Ni Karma System">
+          <Anchors>
+            <Anchor point="TOP" relativePoint="TOP" relativeTo="$parent">
+              <Offset><AbsDimension x="-30" y="-15" /></Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        
+        <FontString name="$parentItemLabel" inherits="GameFontNormal" justifyH="LEFT" text="Item:">
+          <Size>
+            <AbsDimension x="75" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="23" y="-60"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentBaseCostLabel" inherits="GameFontNormal" justifyH="LEFT" text="Minimum Karma:">
+          <Size>
+            <AbsDimension x="115" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parentItemLabel" relativePoint="BOTTOMLEFT">
+              <Offset>
+                <AbsDimension x="0" y="-10"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentTitle1" inherits="GameFontNormal" justifyH="LEFT" text="Player">
+          <Size>
+            <AbsDimension x="98" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parentBaseCostLabel" relativePoint="BOTTOMLEFT">
+              <Offset>
+                <AbsDimension x="0" y="-10"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentTitle2" inherits="GameFontNormal" justifyH="LEFT" text="Class">
+          <Size>
+            <AbsDimension x="60" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentTitle1" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="0" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentTitle3" inherits="GameFontNormal" justifyH="RIGHT" text="Bonus">
+          <Size>
+            <AbsDimension x="40" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentTitle2" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="0" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentTitle4" inherits="GameFontNormal" justifyH="RIGHT" text="Roll">
+          <Size>
+            <AbsDimension x="30" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentTitle3" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="0" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentTitle5" inherits="GameFontNormal" justifyH="RIGHT" text="Final">
+          <Size>
+            <AbsDimension x="40" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentTitle4" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="0" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentOpenRollLabel" inherits="GameFontNormal" justifyH="LEFT" text="Open Roll">
+          <Size>
+            <AbsDimension x="80" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="BOTTOMLEFT">
+              <Offset>
+                <AbsDimension x="50" y="50"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentFinalKarmaLabel" inherits="GameFontNormal" justifyH="LEFT" text="Final Karma:">
+          <Size>
+            <AbsDimension x="80" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT">
+              <Offset>
+                <AbsDimension x="-192" y="50"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+
+        <Texture file="Interface\HelpFrame\HelpFrame-TopLeft">
+          <Size>
+            <AbsDimension x="256" y="256"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT"/>
+          </Anchors>
+        </Texture>
+        <Texture file="Interface\HelpFrame\HelpFrame-TopRight">
+          <Size>
+            <AbsDimension x="128" y="256"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPRIGHT"/>
+          </Anchors>
+        </Texture>
+        <Texture file="Interface\HelpFrame\HelpFrame-BotLeft">
+          <Size>
+            <AbsDimension x="256" y="256"/>
+          </Size>
+          <Anchors>
+            <Anchor point="BOTTOMLEFT"/>
+          </Anchors>
+        </Texture>
+        <Texture file="Interface\HelpFrame\HelpFrame-BotRight">
+          <Size>
+            <AbsDimension x="128" y="256"/>
+          </Size>
+          <Anchors>
+            <Anchor point="BOTTOMRIGHT"/>
+          </Anchors>
+        </Texture>
+      </Layer>
+    </Layers>
+    
+    <Frames>
+      <Button name="KarmaRollFrameButton1" inherits="KarmaRollButtonTemplate" id="1">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentTitle1">
+            <Offset>
+              <AbsDimension x="-8" y="-5"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="KarmaRollFrameButton2" inherits="KarmaRollButtonTemplate" id="2">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="KarmaRollFrameButton1" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="KarmaRollFrameButton3" inherits="KarmaRollButtonTemplate" id="3">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="KarmaRollFrameButton2" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="KarmaRollFrameButton4" inherits="KarmaRollButtonTemplate" id="4">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="KarmaRollFrameButton3" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="KarmaRollFrameButton5" inherits="KarmaRollButtonTemplate" id="5">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="KarmaRollFrameButton4" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="KarmaRollFrameButton6" inherits="KarmaRollButtonTemplate" id="6">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="KarmaRollFrameButton5" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="KarmaRollFrameButton7" inherits="KarmaRollButtonTemplate" id="7">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="KarmaRollFrameButton6" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="KarmaRollFrameButton8" inherits="KarmaRollButtonTemplate" id="8">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="KarmaRollFrameButton7" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="KarmaRollFrameButton9" inherits="KarmaRollButtonTemplate" id="9">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="KarmaRollFrameButton8" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="KarmaRollFrameButton10" inherits="KarmaRollButtonTemplate" id="10">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="KarmaRollFrameButton9" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="KarmaRollFrameButton11" inherits="KarmaRollButtonTemplate" id="11">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="KarmaRollFrameButton10" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="KarmaRollFrameButton12" inherits="KarmaRollButtonTemplate" id="12">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="KarmaRollFrameButton11" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="KarmaRollFrameButton13" inherits="KarmaRollButtonTemplate" id="13">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="KarmaRollFrameButton12" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="KarmaRollFrameButton14" inherits="KarmaRollButtonTemplate" id="14">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="KarmaRollFrameButton13" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="KarmaRollFrameButton15" inherits="KarmaRollButtonTemplate" id="15">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="KarmaRollFrameButton14" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="KarmaRollFrameButton16" inherits="KarmaRollButtonTemplate" id="16">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="KarmaRollFrameButton15" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="KarmaRollFrameButton17" inherits="KarmaRollButtonTemplate" id="17">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="KarmaRollFrameButton16" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+
+      <ScrollFrame name="KarmaRollScrollFrame" inherits="FauxScrollFrameTemplate">
+        <Size>
+          <AbsDimension x="290" y="284"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="KarmaRollFrameButton1">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnVerticalScroll>
+            FauxScrollFrame_OnVerticalScroll(ROLL_FRAME_ROLL_HEIGHT, KarmaRollList_Update)
+          </OnVerticalScroll>
+        </Scripts>
+      </ScrollFrame>
+
+      <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-42" y="-3"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+
+      <EditBox name="$parentItem" autoFocus="false" historyLines="1" letters="100">
+        <Size>
+          <AbsDimension x="190" y="32"/>
+        </Size>
+        <Anchors>
+          <Anchor point="LEFT" relativeTo="$parentItemLabel" relativePoint="RIGHT">
+            <Offset>
+              <AbsDimension x="2" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="BACKGROUND">
+            <Texture name="$parentLeft" file="Interface\Common\Common-Input-Border">
+              <Size>
+                <AbsDimension x="8" y="28"/>
+              </Size>
+              <Anchors>
+                <Anchor point="TOPLEFT">
+                  <Offset>
+                    <AbsDimension x="-8" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+              <TexCoords left="0" right="0.0625" top="0" bottom="0.625"/>
+            </Texture>
+            <Texture name="$parentMiddle" file="Interface\Common\Common-Input-Border">
+              <Size>
+                <AbsDimension x="190" y="28"/>
+              </Size>
+              <Anchors>
+                <Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+              </Anchors>
+              <TexCoords left="0.0625" right="0.9375" top="0" bottom="0.625"/>
+            </Texture>
+            <Texture name="$parentRight" file="Interface\Common\Common-Input-Border">
+              <Size>
+                <AbsDimension x="8" y="28"/>
+              </Size>
+              <Anchors>
+                <Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT"/>
+              </Anchors>
+              <TexCoords left="0.9375" right="1.0" top="0" bottom="0.625"/>
+            </Texture>
+          </Layer>
+        </Layers>
+        <Scripts>
+          <OnShow>
+            this:ClearFocus();
+          </OnShow>
+          <OnEscapePressed>
+            this:ClearFocus();
+          </OnEscapePressed>
+          <OnEnterPressed>
+            this:ClearFocus();
+          </OnEnterPressed>
+        </Scripts>
+        <FontString inherits="ChatFontNormal" />
+      </EditBox>
+      <EditBox name="$parentBaseCost" autoFocus="false" historyLines="1" letters="4">
+        <Size>
+          <AbsDimension x="30" y="32"/>
+        </Size>
+        <Anchors>
+          <Anchor point="LEFT" relativeTo="$parentBaseCostLabel" relativePoint="RIGHT">
+            <Offset>
+              <AbsDimension x="2" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="BACKGROUND">
+            <Texture name="$parentLeft" file="Interface\Common\Common-Input-Border">
+              <Size>
+                <AbsDimension x="8" y="28"/>
+              </Size>
+              <Anchors>
+                <Anchor point="TOPLEFT">
+                  <Offset>
+                    <AbsDimension x="-8" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+              <TexCoords left="0" right="0.0625" top="0" bottom="0.625"/>
+            </Texture>
+            <Texture name="$parentMiddle" file="Interface\Common\Common-Input-Border">
+              <Size>
+                <AbsDimension x="30" y="28"/>
+              </Size>
+              <Anchors>
+                <Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+              </Anchors>
+              <TexCoords left="0.0625" right="0.9375" top="0" bottom="0.625"/>
+            </Texture>
+            <Texture name="$parentRight" file="Interface\Common\Common-Input-Border">
+              <Size>
+                <AbsDimension x="8" y="28"/>
+              </Size>
+              <Anchors>
+                <Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT"/>
+              </Anchors>
+              <TexCoords left="0.9375" right="1.0" top="0" bottom="0.625"/>
+            </Texture>
+          </Layer>
+        </Layers>
+        <Scripts>
+          <OnShow>
+            this:ClearFocus();
+          </OnShow>
+          <OnEscapePressed>
+            this:ClearFocus();
+          </OnEscapePressed>
+          <OnEnterPressed>
+            this:ClearFocus();
+          </OnEnterPressed>
+          <OnTextChanged>
+            KarmaRollList_Update();
+          </OnTextChanged>
+        </Scripts>
+        <FontString inherits="ChatFontNormal" />
+      </EditBox>
+      <EditBox name="$parentFinalKarma" autoFocus="false" historyLines="1" letters="4">
+        <Size>
+          <AbsDimension x="30" y="32"/>
+        </Size>
+        <Anchors>
+          <Anchor point="LEFT" relativeTo="$parentFinalKarmaLabel" relativePoint="RIGHT">
+            <Offset>
+              <AbsDimension x="10" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="BACKGROUND">
+            <Texture name="$parentLeft" file="Interface\Common\Common-Input-Border">
+              <Size>
+                <AbsDimension x="8" y="28"/>
+              </Size>
+              <Anchors>
+                <Anchor point="TOPLEFT">
+                  <Offset>
+                    <AbsDimension x="-8" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+              <TexCoords left="0" right="0.0625" top="0" bottom="0.625"/>
+            </Texture>
+            <Texture name="$parentMiddle" file="Interface\Common\Common-Input-Border">
+              <Size>
+                <AbsDimension x="30" y="28"/>
+              </Size>
+              <Anchors>
+                <Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+              </Anchors>
+              <TexCoords left="0.0625" right="0.9375" top="0" bottom="0.625"/>
+            </Texture>
+            <Texture name="$parentRight" file="Interface\Common\Common-Input-Border">
+              <Size>
+                <AbsDimension x="8" y="28"/>
+              </Size>
+              <Anchors>
+                <Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT"/>
+              </Anchors>
+              <TexCoords left="0.9375" right="1.0" top="0" bottom="0.625"/>
+            </Texture>
+          </Layer>
+        </Layers>
+        <Scripts>
+          <OnShow>
+            this:ClearFocus();
+          </OnShow>
+          <OnEscapePressed>
+            this:ClearFocus();
+          </OnEscapePressed>
+          <OnEnterPressed>
+            this:ClearFocus();
+          </OnEnterPressed>
+        </Scripts>
+        <FontString inherits="ChatFontNormal" />
+      </EditBox>
+
+      <CheckButton name="$parentOpenCheckButton" hidden="false" inherits="OptionsCheckButtonTemplate">
+        <HitRectInsets>
+          <AbsInset left="0" right="0" top="0" bottom="0"/>
+        </HitRectInsets>
+        <Size>
+          <AbsDimension x="24" y="24"/>
+        </Size>
+        <Anchors>
+          <Anchor point="RIGHT" relativeTo="$parentOpenRollLabel" relativePoint="LEFT">
+            <Offset>
+              <AbsDimension x="-2" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            KarmaRoll_OpenToggle();
+          </OnClick>
+        </Scripts>
+      </CheckButton>
+
+      <Button name="$parentClearItemButton" inherits="UIPanelButtonTemplate" text="Clr">
+        <Size>
+          <AbsDimension x="25" y="20"/>
+        </Size>
+		<Anchors>
+		  <Anchor point="TOPLEFT" relativeTo="$parentItem" relativePoint="TOPRIGHT">
+			<Offset>
+			  <AbsDimension x="16" y="-4"/>
+			</Offset>
+		  </Anchor>
+		</Anchors>
+        <Scripts> 
+          <OnClick> 
+            Karma_Clearitem();
+          </OnClick> 
+        </Scripts> 
+      </Button>
+
+      <Button name="$parentClearButton" inherits="UIPanelButtonTemplate" text="Reset">
+        <Size>
+          <AbsDimension x="60" y="20"/>
+        </Size>
+        <Anchors>
+          <Anchor point="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="22" y="22"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts> 
+          <OnClick> 
+            KarmaRollFrame_Clear();
+          </OnClick> 
+        </Scripts> 
+      </Button>
+      <Button name="$parentAwardButton" inherits="UIPanelButtonTemplate" text="Declare Winner">
+        <Size>
+          <AbsDimension x="130" y="20"/>
+        </Size>
+        <Anchors>
+          <Anchor point="BOTTOMRIGHT">
+            <Offset>
+              <AbsDimension x="-65" y="22"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts> 
+          <OnClick> 
+            KarmaRollFrameAwardButton_OnClick();
+          </OnClick> 
+        </Scripts> 
+      </Button>
+    </Frames>
+    
+  </Frame>
+</Ui>
