@@ -26,3 +26,8 @@ Note - DO NOT ASK ME about your website... ask your ISP if you have questions ab
 -- 
 -- Snippets of code "borrowed" (fewer than 100 total lines) can merely include the URL http://www.knights-who-say-ni.com/NKS and credit for the code used.
 -- The Ni_Karma.toc file is granted to the public domain, and may be changed as desired.
+
+Changes by jameskilton:
+
+ - Alt-Clicking starts the bidding instead of just clicking
+ - Hooks into the WoW Loot mod for class priority
