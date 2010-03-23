@@ -1,4 +1,4 @@
-## Interface: 30100
+## Interface: 30300
 ## Title: Ni Karma System [3.0 rel 04]
 ## Version: 3.0 rel 04
 ## Notes: Loot Distribution System for Raids
