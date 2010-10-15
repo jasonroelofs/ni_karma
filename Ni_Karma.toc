@@ -1,14 +1,12 @@
-## Interface: 30300
+## Interface: 40000
 ## Title: Ni Karma System [3.0 rel 04]
 ## Version: 3.0 rel 04
 ## Notes: Loot Distribution System for Raids
-## Author: Vuelhering and Mavios (Icecrown) http://www.knights-who-say-ni.com/NKS
-## LoadOnDemand: 1
-## X-Revision: $Rev: 17 $
-## X-Date: $Date: 2009-04-06 21:34:20 -0600 (Mon, 06 Apr 2009) $
+## Author: Weemuu (exiledhorde.com), Vuelhering and Mavios (Icecrown) http://www.knights-who-say-ni.com/NKS
 ## SavedVariables: KarmaList, KarmaConfig
 NKS_Vars.lua
 localization.lua
+Ni_Lib.lua
 NKS_Parse.lua
 NKS_Roll.lua
 Ni_Karma.lua

@@ -4,27 +4,27 @@
   <Frame name="Karma_core" parent="UIParent"> 
     <Scripts> 
       <OnLoad> 
-        Karma_OnLoad();
+        Karma_OnLoad(self);
       </OnLoad> 
       <OnEvent> 
-        Karma_OnEvent(event);
+        Karma_OnEvent(self, event, ...);
       </OnEvent> 
     </Scripts> 
   </Frame>
 
   <Frame name="ConfigPanel">
-	<Scripts>
-		<OnLoad>
-			ConfigPanel_OnLoad(self);
-		</OnLoad>
-	</Scripts>
+    <Scripts>
+      <OnLoad>
+        ConfigPanel_OnLoad(self);
+      </OnLoad>
+    </Scripts>
   </Frame>
 
   <!-- from wowwiki -->
   <GameTooltip name="KarmaTooltip" frameStrata="TOOLTIP" inherits="GameTooltipTemplate" parent="UIParent" hidden="true">
     <Scripts>
       <Onload>
-        this:SetOwner(WorldFrame, "ANCHOR_NONE");
+        self:SetOwner(WorldFrame, "ANCHOR_NONE");
       </Onload>
     </Scripts>
   </GameTooltip>
@@ -101,10 +101,10 @@
     </Layers>
     <Scripts>
       <OnLoad>
-        this:RegisterForClicks("LeftButtonUp","RightButtonUp");
+        self:RegisterForClicks("LeftButtonUp","RightButtonUp");
       </OnLoad>
       <OnClick>
-        KarmaRollFrameRollButton_OnClick(arg1);
+        KarmaRollFrameRollButton_OnClick(self, button);
       </OnClick>
     </Scripts>
     <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD">
@@ -134,10 +134,10 @@
 
     <Scripts>
       <OnLoad>
-        KarmaRoll_OnLoad();
+        KarmaRoll_OnLoad(self);
       </OnLoad>
       <OnEvent>
-        KarmaRoll_OnEvent(event);
+        KarmaRoll_OnEvent(self, event, ...);
       </OnEvent>
     </Scripts>
 
@@ -150,7 +150,7 @@
             </Anchor>
           </Anchors>
         </FontString>
-        
+
         <FontString name="$parentItemLabel" inherits="GameFontNormal" justifyH="LEFT" text="Item:">
           <Size>
             <AbsDimension x="75" y="20"/>
@@ -294,7 +294,7 @@
         </Texture>
       </Layer>
     </Layers>
-    
+
     <Frames>
       <Button name="KarmaRollFrameButton1" inherits="KarmaRollButtonTemplate" id="1">
         <Anchors>
@@ -526,13 +526,13 @@
         </Layers>
         <Scripts>
           <OnShow>
-            this:ClearFocus();
+            self:ClearFocus();
           </OnShow>
           <OnEscapePressed>
-            this:ClearFocus();
+            self:ClearFocus();
           </OnEscapePressed>
           <OnEnterPressed>
-            this:ClearFocus();
+            self:ClearFocus();
           </OnEnterPressed>
         </Scripts>
         <FontString inherits="ChatFontNormal" />
@@ -585,13 +585,13 @@
         </Layers>
         <Scripts>
           <OnShow>
-            this:ClearFocus();
+            self:ClearFocus();
           </OnShow>
           <OnEscapePressed>
-            this:ClearFocus();
+            self:ClearFocus();
           </OnEscapePressed>
           <OnEnterPressed>
-            this:ClearFocus();
+            self:ClearFocus();
           </OnEnterPressed>
           <OnTextChanged>
             KarmaRollList_Update();
@@ -647,13 +647,13 @@
         </Layers>
         <Scripts>
           <OnShow>
-            this:ClearFocus();
+            self:ClearFocus();
           </OnShow>
           <OnEscapePressed>
-            this:ClearFocus();
+            self:ClearFocus();
           </OnEscapePressed>
           <OnEnterPressed>
-            this:ClearFocus();
+            self:ClearFocus();
           </OnEnterPressed>
         </Scripts>
         <FontString inherits="ChatFontNormal" />
@@ -684,13 +684,13 @@
         <Size>
           <AbsDimension x="25" y="20"/>
         </Size>
-		<Anchors>
-		  <Anchor point="TOPLEFT" relativeTo="$parentItem" relativePoint="TOPRIGHT">
-			<Offset>
-			  <AbsDimension x="16" y="-4"/>
-			</Offset>
-		  </Anchor>
-		</Anchors>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentItem" relativePoint="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="16" y="-4"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
         <Scripts> 
           <OnClick> 
             Karma_Clearitem();
@@ -733,6 +733,6 @@
         </Scripts> 
       </Button>
     </Frames>
-    
+
   </Frame>
 </Ui>
